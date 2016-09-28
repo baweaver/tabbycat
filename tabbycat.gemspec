@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Brandon Weaver"]
   spec.email         = ["keystonelemur@gmail.com"]
   spec.summary       = %q{Stuff to help me grok a bunch of tab files for classtab}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/baweaver/tabbycat"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

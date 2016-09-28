@@ -1,29 +1,14 @@
 # Tabbycat
 
-TODO: Write a gem description
+Random tools, wingnuts, and other things I'm using to grok through a ton of tab data from
+classtab.org to transfer over to my variant of the site.
 
-## Installation
+I'm doing this to get a more comprehensive dataset including speed, key, tuning, and other
+meta information not currently available. I figured since I'm doing this in Ruby anyways
+I might as well share a bit.
 
-Add this line to your application's Gemfile:
+## Note
 
-    gem 'tabbycat'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install tabbycat
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Contributing
-
-1. Fork it ( https://github.com/[my-github-username]/tabbycat/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+I'm likely not going to be making this a sterling bastion of clean code that's well tested.
+This is, and likely will remain, a very hackish app for ripping through text files and
+JSON.
