@@ -11,3 +11,4 @@ end
 
 require 'tabbycat/dataset'
 require 'tabbycat/grokker'
+require 'tabbycat/tab'

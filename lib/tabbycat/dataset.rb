@@ -15,7 +15,7 @@ module Tabbycat
     end
 
     def tabs
-      @tabs ||= tab_json['tabs'].map { |t| OpenStruct.new(t) }
+      @tabs ||= tab_json['tabs'].map { |t| Tabbycat::Tab.new(t) }
     end
 
     def save
