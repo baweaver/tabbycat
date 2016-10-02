@@ -21,7 +21,4 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "json"
   spec.add_runtime_dependency "highline"
   spec.add_runtime_dependency "typhoeus"
-
-  spec.add_development_dependency "bundler", "~> 1.6"
-  spec.add_development_dependency "rake"
 end
