@@ -2,12 +2,43 @@ module Tabbycat
   class Grokker
     attr_reader :dataset
 
-    def initialize(file_name = Tabbycat::TAB_JSON_FILE_NAME)
-      @dataset = Tabbycat::Dataset.new(file_name)
+    def initialize(file_name: Tabbycat::TAB_JSON_FILE_NAME, mode: 'remote', base_link: nil)
+      @dataset = Tabbycat::Dataset.new(
+        tab_json_file_name: file_name, mode: mode, base_link: base_link
+      )
     end
 
     def cli
       @cli ||= HighLine.new
+    end
+
+    def test_accuracy(type)
+      guess_type = case type
+      when 'bpm'            then 'guess_bpm'
+      when 'time_signature' then 'guess_time_signature'
+      when 'tuning'         then 'guess_tuning'
+      else raise "Don't know how to guess for #{type}"
+      end
+
+      puts "Testing accuracy for grokking #{type}", '-' * 80, ''
+      bad_guesses = dataset.select { |tab|
+        begin
+          guess = tab.public_send(guess_type)
+        rescue => e
+          puts e
+          guess = '?'
+        end
+
+        printf "  %-10s -> %80s\n", guess, "#{tab.name} (#{type})"
+        guess == '?'
+      }
+
+      total_tabs = dataset.to_a.size
+
+      puts '', '-' * 80, ''
+      puts "Accuracy across #{total_tabs} tabs was: #{(bad_guesses.size / total_tabs.to_f) * 100}%"
+
+      bad_guesses
     end
 
     def run

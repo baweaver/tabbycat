@@ -2,8 +2,10 @@ module Tabbycat
   class Dataset
     include Enumerable
 
-    def initialize(tab_json_file_name = Tabbycat::TAB_JSON_FILE_NAME)
+    def initialize(tab_json_file_name: Tabbycat::TAB_JSON_FILE_NAME, mode: 'remote', base_link: nil)
       @tab_json_file_name = tab_json_file_name
+      @mode = mode
+      @base_link = base_link
     end
 
     def each(&block)
@@ -15,7 +17,7 @@ module Tabbycat
     end
 
     def tabs
-      @tabs ||= tab_json['tabs'].map { |t| Tabbycat::Tab.new(t) }
+      @tabs ||= tab_json['tabs'].map { |t| Tabbycat::Tab.new(tab: t, mode: @mode, base_link: @base_link) }
     end
 
     def save

@@ -1,6 +1,6 @@
 module Tabbycat
   class Tab < OpenStruct
-    attr_reader :base_link
+    attr_reader :base_link, :mode
 
     BASE_LINK = "https://baweaver.github.io/classtab/tabs"
 
@@ -32,9 +32,11 @@ module Tabbycat
       /#{Regexp.escape k}/i
     }
 
-    def initialize(tab_hash, base_link = BASE_LINK)
-      @tab_hash = tab_hash
-      super(tab_hash)
+    def initialize(tab:, base_link: BASE_LINK, mode: 'remote')
+      @tab_hash = tab
+      @base_link = base_link || BASE_LINK
+      @mode = mode
+      super(tab)
     end
 
     def incomplete_fields
@@ -53,6 +55,10 @@ module Tabbycat
       # How about speed keywords like Allegro?
       speed_words = tabfile[SPEED_WORD_REGEXP]
       return SPEED_KEYWORDS[speed_words.downcase] if speed_words
+
+      # Maybe it's in the name?
+      speed_name = name[SPEED_WORD_REGEXP]
+      return SPEED_KEYWORDS[speed_name.downcase] if speed_name
 
       # Well you got me.
       '?'
@@ -80,7 +86,7 @@ module Tabbycat
       return lined_tuning.flatten.first(6).reverse.map(&:upcase).join(' ') unless lined_tuning.empty?
 
       # We'll just guess they wanted standard tuning.
-      'E A D G B E'
+      '?'
     end
 
     def guess_time_signature
@@ -112,14 +118,16 @@ module Tabbycat
       Launchy.open(youtube_link)
     end
 
-    private
-
     def tabfile_link
       "#{base_link}/#{tabFile}"
     end
 
     def tabfile
-      @tabfile ||= Typhoeus.get(tabfile_link).body
+      @tabfile ||= if mode == 'remote'
+        Typhoeus.get(tabfile_link).body
+      else
+        File.read(tabfile_link).force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
+      end
     end
 
     def youtube_link
